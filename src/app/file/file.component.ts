@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TextService } from '../text-service/text.service';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-file',
@@ -13,7 +12,6 @@ export class FileComponent implements OnInit {
 
   constructor(
     private textService: TextService,
-    @Inject(DOCUMENT) private doc: any
   ) {
   }
 
