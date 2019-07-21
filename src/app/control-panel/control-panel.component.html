@@ -1,5 +1,11 @@
-<div class="format-actions">
-  <button class="format-action" type="button" (click)="toggleFontStyle(fontStyle.Bold)"><b>B</b></button>
-  <button class="format-action" type="button" (click)="toggleFontStyle(fontStyle.Italic)"><i>I</i></button>
-  <button class="format-action" type="button" (click)="toggleFontStyle(fontStyle.Underline)"><u>U</u></button>
+<div class="format-actions" *ngIf="(highlights$ | async) as highlights">
+  <button class="format-action" type="button"
+          [ngClass]="{'highlighted': highlights.bold}"
+          (click)="toggleFontStyle(fontStyle.Bold)"><b>B</b></button>
+  <button class="format-action" type="button"
+          [ngClass]="{'highlighted':highlights.italic}"
+          (click)="toggleFontStyle(fontStyle.Italic)"><i>I</i></button>
+  <button class="format-action" type="button"
+          [ngClass]="{'highlighted': highlights.underline}"
+          (click)="toggleFontStyle(fontStyle.Underline)"><u>U</u></button>
 </div>

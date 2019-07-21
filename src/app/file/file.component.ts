@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TextService } from '../text-service/text.service';
+import { SynonymService } from '../synonym-service/synonym.service';
 
 @Component({
   selector: 'app-file',
@@ -12,6 +13,7 @@ export class FileComponent implements OnInit {
 
   constructor(
     private textService: TextService,
+    private synonymsService: SynonymService,
   ) {
   }
 
@@ -21,5 +23,6 @@ export class FileComponent implements OnInit {
 
   onDbClick(): void {
     this.textService.saveSelection();
+    this.synonymsService.findForWord(this.textService.selectedText);
   }
 }

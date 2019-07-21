@@ -1,14 +1,19 @@
 import { Inject, Injectable } from '@angular/core';
-import { FONT_STYLE } from '../models/format.model';
 import { DOCUMENT } from '@angular/common';
-import { SynonymService } from '../synonym-service/synonym.service';
+import { BehaviorSubject } from 'rxjs';
+import { Highlights } from '../models/highlights.model';
+import { FONT_STYLE } from '../models/format.model';
+import { STYLE_TAG } from '../models/style-tag.model';
 
 @Injectable()
 export class TextService {
-  savedSelection: Range | null;
+  private savedSelection: Range | null;
+  private currentHighlights: Highlights;
+  private highlightSubject = new BehaviorSubject<Highlights>(new Highlights());
+  highlightsChange = this.highlightSubject.asObservable();
+  selectedText: string;
 
   constructor(
-    private synonymsService: SynonymService,
     @Inject(DOCUMENT) private doc: Document) {
   }
 
@@ -29,16 +34,42 @@ export class TextService {
     }
 
     this.savedSelection = sel.getRangeAt(0);
-    this.synonymsService.findForWord(sel.toString());
+    this.selectedText = sel.toString();
+
+    this.highlightControls();
   }
 
   replaceSelection(replacementWord: string): void {
     this.savedSelection.deleteContents();
     const insertionText = replacementWord + ' ';
-    this.savedSelection.insertNode(document.createTextNode(insertionText));
+    this.savedSelection.insertNode(this.doc.createTextNode(insertionText));
   }
 
   toggleStyle(style: FONT_STYLE) {
     this.doc.execCommand(style);
+    this.toggleHighlight(style);
+  }
+
+  private toggleHighlight(style: FONT_STYLE) {
+    this.currentHighlights.toggleForStyle(style);
+    this.emitHighlights();
+  }
+
+  private highlightControls(): void {
+    this.currentHighlights = new Highlights();
+
+    const editorElement = this.doc.querySelector('.file');
+    let currentElement = this.savedSelection.startContainer.parentNode;
+
+    while (!editorElement.isEqualNode(currentElement)) {
+      this.currentHighlights.saveForTag(currentElement.nodeName as STYLE_TAG);
+      currentElement = currentElement.parentNode;
+    }
+
+    this.emitHighlights();
+  }
+
+  private emitHighlights() {
+    this.highlightSubject.next(this.currentHighlights);
   }
 }

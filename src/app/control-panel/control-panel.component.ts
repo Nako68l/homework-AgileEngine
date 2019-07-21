@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FONT_STYLE } from '../models/format.model';
 import { TextService } from '../text-service/text.service';
 
@@ -8,10 +8,15 @@ import { TextService } from '../text-service/text.service';
   styleUrls: ['./control-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlPanelComponent {
+export class ControlPanelComponent implements OnInit {
   fontStyle = FONT_STYLE;
+  highlights$;
 
   constructor(private textService: TextService) {
+  }
+
+  ngOnInit(): void {
+    this.highlights$ = this.textService.highlightsChange;
   }
 
   toggleFontStyle(style: FONT_STYLE) {
