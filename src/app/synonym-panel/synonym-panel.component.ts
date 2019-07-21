@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SynonymService } from '../synonym-service/synonym.service';
 import { Synonym } from '../models/synonym.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-synonym-panel',
@@ -8,14 +9,14 @@ import { Synonym } from '../models/synonym.model';
   styleUrls: ['./synonym-panel.component.scss']
 })
 export class SynonymPanelComponent implements OnInit {
-  currentSynonyms: Synonym[] = [];
+  currentSynonyms$: Observable<Synonym[]>;
   @Output() synonymPick: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private synonymsService: SynonymService) {
   }
 
   ngOnInit() {
-    this.synonymsService.synonymsChange.subscribe(synonyms => this.currentSynonyms = synonyms);
+    this.currentSynonyms$ = this.synonymsService.synonymsChange;
   }
 
   chooseSynonym({ word }: Synonym): void {

@@ -1,7 +1,7 @@
-<div class="synonym-panel">
-  <div class="synonym-panel__header" [hidden]="currentSynonyms.length === 0">Synonyms:</div>
+<div class="synonym-panel" *ngIf="(currentSynonyms$ | async) as synonyms">
+  <div class="synonym-panel__header" [hidden]="synonyms.length === 0">Synonyms:</div>
   <div class="synonym-panel__content">
-    <span *ngFor="let synonym of currentSynonyms"
+    <span *ngFor="let synonym of synonyms"
           (click)="chooseSynonym(synonym)"
           class="synonym">
     {{synonym.word}}
