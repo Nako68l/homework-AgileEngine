@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TextService } from './text-service/text.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'homework-AgileEngine';
+  title = 'Simple Text Editor';
+
+  constructor(
+    private textService: TextService
+  ) {
+  }
+
+  onSynonymPick(synonym: string): void {
+    this.textService.replaceSelection(synonym);
+  }
 }

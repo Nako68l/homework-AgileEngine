@@ -1,0 +1,33 @@
+:host {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 5px;
+}
+
+.synonym-panel__header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.synonym-panel {
+  width: 600px;
+  padding-bottom: 20px;
+}
+
+.synonym-panel__content{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.synonym {
+  border: 1px solid #bdb9b9;
+  margin-right: 15px;
+  margin-bottom: 5px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background-color: #efe7e7;
+  cursor: pointer;
+}
